@@ -1,12 +1,18 @@
+
 <?php
 class Product {
-    private $category, $id, $code, $name, $price;
+    private $category;
+    private $id;
+    private $code;
+    private $name;
+    private $price;
 
-    public function __construct($category, $code, $name, $price) {
-        $this->category = $category;
-        $this->code = $code;
-        $this->name = $name;
-        $this->price = $price;
+    public function __construct() {
+        $this->category = null;
+        $this->id = 0;
+        $this->code = '';
+        $this->name = '';
+        $this->price = 0;
     }
 
     public function getCategory() {
@@ -45,47 +51,40 @@ class Product {
         return $this->price;
     }
 
-    public function getPriceFormatted() {
-        $formatted_price = number_format($this->price, 2);
-        return $formatted_price;
-    }
-
     public function setPrice($value) {
         $this->price = $value;
     }
 
+    public function getPriceFormatted() {
+        return number_format($this->price, 2);
+    }
+
     public function getDiscountPercent() {
-        $discount_percent = 30;
-        return $discount_percent;
+        return 30;
     }
 
     public function getDiscountAmount() {
         $discount_percent = $this->getDiscountPercent() / 100;
         $discount_amount = $this->price * $discount_percent;
         $discount_amount_r = round($discount_amount, 2);
-        $discount_amount_f = number_format($discount_amount_r, 2);
-        return $discount_amount_f;
+        return number_format($discount_amount_r, 2);
     }
 
     public function getDiscountPrice() {
         $discount_price = $this->price - $this->getDiscountAmount();
-        $discount_price_f = number_format($discount_price, 2);
-        return $discount_price_f;
+        return number_format($discount_price, 2);
     }
 
     public function getImageFilename() {
-        $image_filename = $this->code . '.png';
-        return $image_filename;
+        return $this->code . '.png';
     }
 
     public function getImagePath() {
-        $image_path = '../images/' . $this->getImageFilename();
-        return $image_path;
+        return '../images/' . $this->getImageFilename();
     }
 
     public function getImageAltText() {
-        $image_alt = 'Image: ' . $this->getImageFilename();
-        return $image_alt;
+        return 'Image: ' . $this->getImageFilename();
     }
 }
 ?>
