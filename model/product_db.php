@@ -1,3 +1,4 @@
+
 <?php
 class ProductDB {
     public static function getProductsByCategory($category_id) {
@@ -13,20 +14,26 @@ class ProductDB {
         $statement->execute();
         $rows = $statement->fetchAll();
         $statement->closeCursor();
-    
+
+        $products = array();
+
         foreach ($rows as $row) {
-            $product = new Product($category,
-                                   $row['productCode'],
-                                   $row['productName'],
-                                   $row['listPrice']);
-            $product->setId($row['productID']);
+            $product = new Product();
+            $product->setCategory($category);
+            $product->setCode($row['productCode']);
+            $product->setName($row['productName']);
+            $product->setPrice($row['listPrice']);
+            $product->setID($row['productID']);
+
             $products[] = $product;
         }
+
         return $products;
     }
 
     public static function getProduct($product_id) {
         $db = Database::getDB();
+
         $query = 'SELECT * FROM products
                   WHERE productID = :product_id';
         $statement = $db->prepare($query);
@@ -34,13 +41,18 @@ class ProductDB {
         $statement->execute();
         $row = $statement->fetch();
         $statement->closeCursor();
-    
+
+        $statement->closeCursor();
+
         $category = CategoryDB::getCategory($row['categoryID']);
-        $product = new Product($category,
-                               $row['productCode'],
-                               $row['productName'],
-                               $row['listPrice']);
+
+        $product = new Product();
+        $product->setCategory($category);
+        $product->setCode($row['productCode']);
+        $product->setName($row['productName']);
+        $product->setPrice($row['listPrice']);
         $product->setID($row['productID']);
+
         return $product;
     }
 
