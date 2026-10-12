@@ -10,8 +10,10 @@ $category_db = new CategoryDB();
 $product_db = new ProductDB();
 
 $action = filter_input(INPUT_POST, 'action');
+
 if ($action == NULL) {
     $action = filter_input(INPUT_GET, 'action');
+
     if ($action == NULL) {
         $action = 'list_products';
     }
@@ -28,7 +30,8 @@ if ($action == 'list_products') {
         $category_id = 1;
     }
 
-    // Get product and category data
+    // Get category and product data
+    $categories = $category_db->getCategories();
     $current_category = $category_db->getCategory($category_id);
     $products = $product_db->getProductsByCategory($category_id);
 
@@ -58,6 +61,7 @@ if ($action == 'list_products') {
 
 } else if ($action == 'show_add_form') {
     $categories = $category_db->getCategories();
+
     include('product_add.php');
 
 } else if ($action == 'add_product') {
@@ -69,7 +73,11 @@ if ($action == 'list_products') {
 
     $code = filter_input(INPUT_POST, 'code');
     $name = filter_input(INPUT_POST, 'name');
-    $price = filter_input(INPUT_POST, 'price');
+    $price = filter_input(
+        INPUT_POST,
+        'price',
+        FILTER_VALIDATE_FLOAT
+    );
 
     if (
         $category_id == NULL ||
