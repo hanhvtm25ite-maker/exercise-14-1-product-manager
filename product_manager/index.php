@@ -7,6 +7,7 @@ require('../model/product.php');
 require('../model/product_db.php');
 
 $category_db = new CategoryDB();
+$product_db = new ProductDB();
 
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL) {
@@ -29,7 +30,7 @@ if ($action == 'list_products') {
 
     // Get product and category data
     $current_category = $category_db->getCategory($category_id);
-    $products = ProductDB::getProductsByCategory($category_id);
+    $products = $product_db->getProductsByCategory($category_id);
 
     // Display the product list
     include('product_list.php');
@@ -49,7 +50,7 @@ if ($action == 'list_products') {
     );
 
     // Delete the product
-    ProductDB::deleteProduct($product_id);
+    $product_db->deleteProduct($product_id);
 
     // Display the Product List page for the current category
     header("Location: .?category_id=$category_id");
@@ -91,7 +92,7 @@ if ($action == 'list_products') {
         $product->setName($name);
         $product->setPrice($price);
 
-        ProductDB::addProduct($product);
+        $product_db->addProduct($product);
 
         // Display the Product List page for the current category
         header("Location: .?category_id=$category_id");
