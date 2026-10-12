@@ -1,10 +1,12 @@
-```php
+
 <?php
 require('../model/database.php');
 require('../model/category.php');
 require('../model/category_db.php');
 require('../model/product.php');
 require('../model/product_db.php');
+
+$category_db = new CategoryDB();
 
 $action = filter_input(INPUT_POST, 'action');
 if ($action == NULL) {
@@ -26,8 +28,7 @@ if ($action == 'list_products') {
     }
 
     // Get product and category data
-    $current_category = CategoryDB::getCategory($category_id);
-    $categories = CategoryDB::getCategories();
+    $current_category = $category_db->getCategory($category_id);
     $products = ProductDB::getProductsByCategory($category_id);
 
     // Display the product list
@@ -55,7 +56,7 @@ if ($action == 'list_products') {
     exit();
 
 } else if ($action == 'show_add_form') {
-    $categories = CategoryDB::getCategories();
+    $categories = $category_db->getCategories();
     include('product_add.php');
 
 } else if ($action == 'add_product') {
@@ -81,7 +82,7 @@ if ($action == 'list_products') {
         include('../errors/error.php');
 
     } else {
-        $current_category = CategoryDB::getCategory($category_id);
+        $current_category = $category_db->getCategory($category_id);
 
         // Create Product object and set its data
         $product = new Product();
@@ -98,4 +99,3 @@ if ($action == 'list_products') {
     }
 }
 ?>
-```

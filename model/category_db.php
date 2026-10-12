@@ -1,7 +1,7 @@
 
 <?php
 class CategoryDB {
-    public static function getCategories() {
+    public function getCategories() {
         $db = Database::getDB();
         $query = 'SELECT * FROM categories
                   ORDER BY categoryID';
@@ -20,7 +20,7 @@ class CategoryDB {
         return $categories;
     }
 
-    public static function getCategory($category_id) {
+    public function getCategory($category_id) {
         $db = Database::getDB();
         $query = 'SELECT * FROM categories
                   WHERE categoryID = :category_id';
