@@ -10,6 +10,7 @@ $category_db = new CategoryDB();
 $product_db = new ProductDB();
 
 $action = filter_input(INPUT_GET, 'action');
+
 if ($action == NULL) {
     $action = 'list_products';
 }
@@ -25,9 +26,12 @@ if ($action == 'list_products') {
         $category_id = 1;
     }
 
+    // Get category and product data
+    $categories = $category_db->getCategories();
     $current_category = $category_db->getCategory($category_id);
     $products = $product_db->getProductsByCategory($category_id);
 
+    // Display the product list
     include('product_list.php');
 
 } else if ($action == 'view_product') {
@@ -43,7 +47,9 @@ if ($action == 'list_products') {
     } else {
         $product = $product_db->getProduct($product_id);
         $category = $product->getCategory();
+        $categories = $category_db->getCategories();
 
+        // Display the product details
         include('product_view.php');
     }
 }
